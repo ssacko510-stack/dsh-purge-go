@@ -1,0 +1,15 @@
+node_modules/
+dist/
+*.tgz
+*.zip
+src.tgz
+.dsh-purge-revision
+.dsh-purge-*
+applied.json
+channel.json
+version-history.json
+*.log
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
