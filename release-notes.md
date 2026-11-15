@@ -1,3 +1,41 @@
+# 1.1.71-g17（DSH Go 1.1.0）
+
+## 中文
+
+- 版本 **1.1.71-g17**：适配 **DSH Go 1.1.0**（内置 dsh 0.2.2-rc.1）。补丁表仍是上游 1.1.71 那 85 条，**没有新增或改动任何锚点**。
+- **1.0.16 → 1.1.0 差异面**：上游引擎补丁系列 145 → 149 条（新增 4 条、零删除：
+  `deepseek-attachment-error`、`fork-default-effort`、`config-editor-lock-order`、
+  `piai-overflow-output-limit`），但引擎树里真正变化的文件只有 4 个：
+  `dsh-api-session-controller/lib/index.js`、`dsh-config-editor/lib/index.js`、
+  `dsh-llm-deepseek/lib/index.js`、`@earendil-works/pi-ai/dist/utils/overflow.js`。
+- **零漂移**：227 个 replacement 全量探针跑过，没有任何一条从「旧树命中 > 0」变成「新树命中 = 0」。
+  这 4 个文件里只有 `dsh-llm-deepseek` 在本补丁表里，而 1.1.0 改的是 `isAttachmentError` 两行，不在锚点上；
+  `dsh-config-editor` 与 pi-ai `overflow.js` 压根不在表里。
+- **实测**：两棵树各跑一次 `core.applyPatches`，计数都是
+  `applied 65 / already 6 / skipped 2 / missing_file 6 / na 6`，状态差异 0，85 条补丁逐条状态相同。
+  打完标记 5 个，`agent.steer(message);` 在队列分支残留 0 —— #86 的带守卫锚点在 1.1.0 上照旧命中。
+- **升级方式**：重新导入新的 tgz，和第一次装一样。面板内自动更新在这条线上是关掉的。
+
+## English
+
+- **1.1.71-g17** — targets **DSH Go 1.1.0** (bundled dsh 0.2.2-rc.1). Same 85-patch table, **no new or changed anchors**.
+- **Diff surface, 1.0.16 → 1.1.0**: the upstream engine patch series grew 145 → 149 (four added, none removed —
+  `deepseek-attachment-error`, `fork-default-effort`, `config-editor-lock-order`,
+  `piai-overflow-output-limit`), yet only four files in the engine tree actually differ:
+  `dsh-api-session-controller/lib/index.js`, `dsh-config-editor/lib/index.js`,
+  `dsh-llm-deepseek/lib/index.js`, `@earendil-works/pi-ai/dist/utils/overflow.js`.
+- **Zero drift**: all 227 replacements were probed; none went from "hit > 0 on the old tree" to
+  "hit = 0 on the new tree". Only `dsh-llm-deepseek` of those four appears in this patch table, and
+  1.1.0 touched its `isAttachmentError` lines, not the anchors; `dsh-config-editor` and pi-ai
+  `overflow.js` are not in the table at all.
+- **Measured**: one `core.applyPatches` run per tree, both counting
+  `applied 65 / already 6 / skipped 2 / missing_file 6 / na 6`, zero status diff across all 85 patches.
+  Five markers land, and zero `agent.steer(message);` remain in the queue branch — the guarded #86 anchor
+  still matches on 1.1.0.
+- **Upgrading** means importing the newer tarball, same as the first install. In-panel auto-update stays off on this line.
+
+---
+
 # 1.1.71-g16（DSH Go 1.0.16）
 
 ## 中文

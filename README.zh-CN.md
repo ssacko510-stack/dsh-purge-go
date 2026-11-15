@@ -4,7 +4,7 @@
 
 <h1 align="center">⚔️ dsh-purge — DSH Go 适配线</h1>
 
-<p align="center"><strong>版本 1.1.71-g16 · DSH Go 1.0.16（内置 dsh 0.2.2-rc.1）</strong></p>
+<p align="center"><strong>版本 1.1.71-g17 · DSH Go 1.1.0（内置 dsh 0.2.2-rc.1）</strong></p>
 
 <p align="center">
   <em>DeepSeek Harness 破甲，面向 DSH Go 客户端：导入即生效，宿主回忆段原样透传，CLI --apply 自动写戳。</em>
@@ -13,7 +13,7 @@
 <p align="center">
   <a href="https://github.com/ssacko510-stack/dsh-purge-go/stargazers"><img src="https://img.shields.io/github/stars/ssacko510-stack/dsh-purge-go?logo=github&label=Stars" alt="GitHub stars"></a>
   <a href="https://github.com/ssacko510-stack/dsh-purge-go/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-65a30d?style=flat" alt="MIT license"></a>
-  <img src="https://img.shields.io/badge/DSH%20Go-1.0.16-1a73e8" alt="DSH Go 1.0.16">
+  <img src="https://img.shields.io/badge/DSH%20Go-1.1.0-1a73e8" alt="DSH Go 1.1.0">
   <br>
   <img src="https://img.shields.io/badge/Node.js-%3E%3D22.13.0-339933?logo=node.js&logoColor=fff" alt="Node.js">
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=000" alt="JavaScript">
@@ -62,7 +62,7 @@
 
 ## 介绍
 
-**dsh-purge** 是装在本机 **DSH Go**（DeepSeek Harness 官方手机端）上的网络安全红队评测插件。本条线适配 **DSH Go 1.0.16 / 1.0.15 / 1.0.14**（内置 dsh `0.2.2-rc.1`）。
+**dsh-purge** 是装在本机 **DSH Go**（DeepSeek Harness 官方手机端）上的网络安全红队评测插件。本条线适配 **DSH Go 1.1.0 / 1.0.16 / 1.0.15**（内置 dsh `0.2.2-rc.1`）。
 
 电脑桌面线——`dsh web` 与官方桌面 EXE——单独维护在 [`ssacko510-stack/dsh-purge-fork`](https://github.com/ssacko510-stack/dsh-purge-fork)。两条线共用同一张补丁表，宿主适配层不同。**只装一条**，别混装；对照表见 [`MAINTENANCE.md`](MAINTENANCE.md)。
 
@@ -155,14 +155,15 @@ Harness 不只是把问题交给模型。它还会在运行时改提示词、审
 
 | DSH Go | 内置 dsh | 插件版本 | 状态 |
 | --- | --- | --- | --- |
-| **1.0.16** | 0.2.2-rc.1 | **1.1.71-g16**（本仓库 main） | 已实测 —— 85 条补丁，`applied 65 / already 6 / missing_file 7 / skipped 1 / na 6`，与 1.0.15 状态差异 0，`agent.steer(message);` 残留 0 |
+| **1.1.0** | 0.2.2-rc.1 | **1.1.71-g17**（本仓库 main） | 已实测 —— 85 条补丁，`applied 65 / already 6 / missing_file 6 / skipped 2 / na 6`，与 1.0.16 状态差异 0，`agent.steer(message);` 残留 0 |
+| 1.0.16 | 0.2.2-rc.1 | 1.1.71-g16（标签 `v1.1.71-g16`） | 已实测 —— 内含带守卫的 #86 锚点 |
 | 1.0.15 | 0.2.2-rc.1 | 1.1.71-g15（标签 `v1.1.71-g15`） | 已实测 |
 | 1.0.14 | 0.2.2-rc.1 | 1.1.71-g14 | 宿主自有段 `dsh-go:confirmed-memory` 从这版开始出现 |
 | <= 1.0.13 | — | 未验证 | 没有回忆段，行为未测 |
 
 对不上的补丁只会显示 `skipped` / `missing_file`，不会乱改文件。
 
-1.0.15 → 1.0.16 的引擎树只有 22 个文件变化，与本补丁表相交的 3 个（session-controller #85/#86、client-ui-conversation #56/#77、anthropic-messages #47/#49）。唯一真实漂移是 #86 —— 1.0.16 在 steer 分支首行插了删除守卫，老锚点整段命中不到却仍报 applied。g16 带守卫锚点。
+1.0.16 → 1.1.0 的变化：上游引擎补丁系列从 145 条涨到 149 条（新增 4 条、零删除 —— `deepseek-attachment-error`、`fork-default-effort`、`config-editor-lock-order`、`piai-overflow-output-limit`），但引擎树里真正变的文件只有 **4 个**：`dsh-api-session-controller/lib/index.js`、`dsh-config-editor/lib/index.js`、`dsh-llm-deepseek/lib/index.js`、`@earendil-works/pi-ai/dist/utils/overflow.js`。这 4 个里没有一个锚点漂移 —— 本补丁表只碰 `dsh-llm-deepseek`，而 `dsh-config-editor` 与 pi-ai overflow 压根不在表里。所以 g17 只是版本号与文档的升级：同样 85 条补丁、同样的状态计数。历史留档：1.0.15 → 1.0.16 变了 22 个文件、交集 3 个，唯一真漂移是 #86（1.0.16 在 steer 分支首行插了删除守卫，老锚点整段命中不到却仍报 applied；g16 补了带守卫的锚点，这条锚点在 1.1.0 上照样命中）。
 
 ---
 ## 安装
@@ -172,7 +173,7 @@ DSH Go 只能导 **tgz**。三种方式挑一种。
 **1. Release 附件**（要长期稳定就用这个）
 
 ```text
-https://github.com/ssacko510-stack/dsh-purge-go/releases/download/v1.1.71-g16/dsh-purge-1.1.71-g16.tgz
+https://github.com/ssacko510-stack/dsh-purge-go/releases/download/v1.1.71-g17/dsh-purge-1.1.71-g17.tgz
 ```
 
 **2. 分支归档**（永远是最新的 main）
@@ -197,7 +198,7 @@ https://codeload.github.com/ssacko510-stack/dsh-purge-go/tar.gz/refs/heads/main
 
 - 会话标题旁出现 **dsh-purge**，点开后在「清洗」里有「应用」。
 - 聊天里 `/purge status` 能打出 DSH_HOME 和补丁列表，路径应是你正在用的那份。
-- 应用后，装好的 @deepseek-ai 树里 `lib/index.js` 带 `// [dsh-purge-...]` 标记 —— 1.0.16 上是 5 个。
+- 应用后，装好的 @deepseek-ai 树里 `lib/index.js` 带 `// [dsh-purge-...]` 标记 —— 1.1.0 上是 5 个。
 
 ### 手动安装
 
@@ -280,7 +281,7 @@ dsh-purge --edit
 purge_status   purge_apply   purge_revert
 ```
 
-设置页「应用」成功后 DSH Go 会自动重启一次，以加载已改的引擎包；也可手动点「重启」。补丁标题下的版本行显示当前安装的构建（例如 `1.1.71-g16`）。这条线**关掉了面板内自动更新**：更新器只认 `vX.Y.Z` 形态的标签，而本线用 `-g<minor>` 后缀，拿不到就按「无更新」处理，不会把面板刷红。升级方式就是重新导入新的 tgz，和第一次装一样。
+设置页「应用」成功后 DSH Go 会自动重启一次，以加载已改的引擎包；也可手动点「重启」。补丁标题下的版本行显示当前安装的构建（例如 `1.1.71-g17`）。这条线**关掉了面板内自动更新**：更新器只认 `vX.Y.Z` 形态的标签，而本线用 `-g<minor>` 后缀，拿不到就按「无更新」处理，不会把面板刷红。升级方式就是重新导入新的 tgz，和第一次装一样。
 
 输入框旁的「回退一次」和「回退上一轮」跟官方 DSH `session.fork({ atSeq })`：撤回已进行的那一轮，新会话接上之前的上下文，旧会话归档，那句回到输入框，再发送会重新注入。聊天里 `/rewind` 同样可用。
 
@@ -430,14 +431,14 @@ DSH Go 的安装包本体不动——不改 `app.asar`，不改签名。点「�
 
 ## 更新
 
-每一版改了什么、安装包在 [Releases](https://github.com/ssacko510-stack/dsh-purge-go/releases)。发新版时把 `package.json` 的版本号改掉，中英文说明写进 `release-notes.md`，推到 `main` 就会自动打包。同一版本再推送不会重复发包。标签直接用 `v<版本号>`，例如 `v1.1.71-g16`。
+每一版改了什么、安装包在 [Releases](https://github.com/ssacko510-stack/dsh-purge-go/releases)。发新版时把 `package.json` 的版本号改掉，中英文说明写进 `release-notes.md`，推到 `main` 就会自动打包。同一版本再推送不会重复发包。标签直接用 `v<版本号>`，例如 `v1.1.71-g17`。
 
 ## 说明
 
 - 改动范围是本机 `@deepseek-ai/*` 包里的渲染文案、默认策略和执行逻辑，以及用户目录下的覆盖文件与规则集。
 - 升级后原文对不上会显示跳过，这次应用仍算完成，不会乱改。
 - 不改动非 `@deepseek-ai` 的第三方插件源仓库（启动时的 CMD 无感会**尽力**修补已装的 doctor / market / 梁神 / mnemon，属运行时补丁）。
-- 安装本构建：把 `https://github.com/ssacko510-stack/dsh-purge-go/releases/download/v1.1.71-g16/dsh-purge-1.1.71-g16.tgz` 粘进 DSH Go 的「添加插件」框；或用 codeload 归档 `https://codeload.github.com/ssacko510-stack/dsh-purge-go/tar.gz/refs/heads/main`。`dsh plugin add --profile web` / `--profile desktop` 属于桌面线，不是这一条。
+- 安装本构建：把 `https://github.com/ssacko510-stack/dsh-purge-go/releases/download/v1.1.71-g17/dsh-purge-1.1.71-g17.tgz` 粘进 DSH Go 的「添加插件」框；或用 codeload 归档 `https://codeload.github.com/ssacko510-stack/dsh-purge-go/tar.gz/refs/heads/main`。`dsh plugin add --profile web` / `--profile desktop` 属于桌面线，不是这一条。
 
 ---
 
@@ -462,7 +463,7 @@ doctor 全部检查通过时退出码为 0，否则为 1。只有健康状态可
 
 ## 事务式更新器
 
-**这条线按设计关掉了面板内自动更新。** `checkUpdate()` 挑 Release 资产时只认 `v?X.Y.Z` 形态的标签，而这里的版本号一律带 `-g<minor>` 后缀（`1.1.71-g16`），严格匹配永远过不了。与其让面板报错变红，这个分支直接返回「无更新」，并提示去拿 tgz。
+**这条线按设计关掉了面板内自动更新。** `checkUpdate()` 挑 Release 资产时只认 `v?X.Y.Z` 形态的标签，而这里的版本号一律带 `-g<minor>` 后缀（`1.1.71-g17`），严格匹配永远过不了。与其让面板报错变红，这个分支直接返回「无更新」，并提示去拿 tgz。
 
 所以升级是固定的手工动作：从 [Releases](https://github.com/ssacko510-stack/dsh-purge-go/releases) 下载新的 `dsh-purge-<版本>.tgz`，粘进「添加插件」，然后**彻底退出 DSH Go → 重新打开 → 清洗页点应用**。导入只是替换插件本体，引擎补丁会重新打一遍，不涉及回滚状态。
 

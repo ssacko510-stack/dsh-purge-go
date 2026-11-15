@@ -1,4 +1,4 @@
-# FORK NOTES — DSH Go 适配线（DSH Go 1.0.16 / 1.0.15 / 1.0.14）
+# FORK NOTES — DSH Go 适配线（DSH Go 1.1.0 / 1.0.16 / 1.0.15）
 
 ⚠️ **本文件描述的是 DSH Go 线**，不是电脑桌面线。桌面线（`dsh web` / 官方桌面版、打 `app.asar`、目标 dsh 0.2.x）在
 另一个仓库：<https://github.com/ssacko510-stack/dsh-purge-fork>。两条线共用同一张补丁表，只有宿主适配层不同；
@@ -6,9 +6,9 @@
 
 上游：<https://github.com/YuJunZhiXue/dsh-purge>（Apache-2.0，见 `docs/upstream-dsh-purge-LICENSE`）
 社区兼容构建来源：<https://github.com/realMisakaMikoto/dsh-purge>
-本仓库版本：`dsh-purge 1.1.71-g16`（= 上游补丁表基线 1.1.71 + DSH Go 1.0.16）。**Go 线版本号走 `-g<minor>` 号段**，
+本仓库版本：`dsh-purge 1.1.71-g17`（= 上游补丁表基线 1.1.71 + DSH Go 1.1.0）。**Go 线版本号走 `-g<minor>` 号段**，
 不跟上游 1.2.x 走，避免与桌面线混淆。
-支持面：**DSH Go 1.0.16 / 1.0.15 / 1.0.14（内置 dsh 0.2.2-rc.1）**。
+支持面：**DSH Go 1.1.0 / 1.0.16 / 1.0.15（内置 dsh 0.2.2-rc.1）**。
 不带任何本机数据（`$DSH_HOME/redteam/config.json`、密钥、engagement 记录都不在仓库里）。
 
 下文各节按上游 dsh 版本组织，仍适用于本线的补丁表；DSH Go 宿主侧的适配记在文末「DSH Go 适配」一节。

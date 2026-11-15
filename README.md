@@ -4,7 +4,7 @@
 
 <h1 align="center">⚔️ dsh-purge — DSH Go line</h1>
 
-<p align="center"><strong>Version 1.1.71-g16 · DSH Go 1.0.16 (bundled dsh 0.2.2-rc.1)</strong></p>
+<p align="center"><strong>Version 1.1.71-g17 · DSH Go 1.1.0 (bundled dsh 0.2.2-rc.1)</strong></p>
 
 <p align="center">
   <em>DeepSeek Harness jailbreak for the DSH Go client: patches land on import, the host-owned recall section is passed through verbatim, and the CLI writes its stamp automatically.</em>
@@ -13,7 +13,7 @@
 <p align="center">
   <a href="https://github.com/ssacko510-stack/dsh-purge-go/stargazers"><img src="https://img.shields.io/github/stars/ssacko510-stack/dsh-purge-go?logo=github&label=Stars" alt="GitHub stars"></a>
   <a href="https://github.com/ssacko510-stack/dsh-purge-go/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-65a30d?style=flat" alt="MIT license"></a>
-  <img src="https://img.shields.io/badge/DSH%20Go-1.0.16-1a73e8" alt="DSH Go 1.0.16">
+  <img src="https://img.shields.io/badge/DSH%20Go-1.1.0-1a73e8" alt="DSH Go 1.1.0">
   <br>
   <img src="https://img.shields.io/badge/Node.js-%3E%3D22.13.0-339933?logo=node.js&logoColor=fff" alt="Node.js">
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=000" alt="JavaScript">
@@ -60,7 +60,7 @@ If this project helps you, send it over — I'm out here asking~
 
 ## What this is
 
-**dsh-purge** is a cybersecurity red-team plugin for **DSH Go**, the official DeepSeek Harness client for Android/iOS already installed on your device. This build targets **DSH Go 1.0.16 / 1.0.15 / 1.0.14** (bundled dsh `0.2.2-rc.1`).
+**dsh-purge** is a cybersecurity red-team plugin for **DSH Go**, the official DeepSeek Harness client for Android/iOS already installed on your device. This build targets **DSH Go 1.1.0 / 1.0.16 / 1.0.15** (bundled dsh `0.2.2-rc.1`).
 
 The desktop line — `dsh web` and the official desktop EXE — is maintained separately in [`ssacko510-stack/dsh-purge-fork`](https://github.com/ssacko510-stack/dsh-purge-fork). The two lines share the same patch table but ship different host adapters. **Install one, not both**; see [`MAINTENANCE.md`](MAINTENANCE.md) for the side-by-side table.
 
@@ -155,14 +155,15 @@ This build targets the engine bundled inside the **DSH Go client** only. Do not 
 
 | DSH Go | bundled dsh | plugin | status |
 | --- | --- | --- | --- |
-| **1.0.16** | 0.2.2-rc.1 | **1.1.71-g16** (this repo, main) | verified — 85 patches, `applied 65 / already 6 / missing_file 7 / skipped 1 / na 6`, 0 status diff vs 1.0.15, leftover `agent.steer(message);` = 0 |
+| **1.1.0** | 0.2.2-rc.1 | **1.1.71-g17** (this repo, main) | verified — 85 patches, `applied 65 / already 6 / missing_file 6 / skipped 2 / na 6`, 0 status diff vs 1.0.16, leftover `agent.steer(message);` = 0 |
+| 1.0.16 | 0.2.2-rc.1 | 1.1.71-g16 (tag `v1.1.71-g16`) | verified — carries the guarded #86 anchor |
 | 1.0.15 | 0.2.2-rc.1 | 1.1.71-g15 (tag `v1.1.71-g15`) | verified |
 | 1.0.14 | 0.2.2-rc.1 | 1.1.71-g14 | host-owned `dsh-go:confirmed-memory` section appears here |
 | <= 1.0.13 | — | not verified | recall section absent, behaviour untested |
 
 Patches that no longer match report `skipped` / `missing_file` instead of rewriting blindly.
 
-What changed between 1.0.15 and 1.0.16: 22 files in the engine tree, 3 of them touched by this patch table (session-controller #85/#86, client-ui-conversation #56/#77, anthropic-messages #47/#49). #86 was the only real drift — 1.0.16 inserted a deletion guard into the steer case, so the old anchor went silent while still reporting applied. g16 carries the guarded anchor.
+What changed between 1.0.16 and 1.1.0: the upstream engine patch series grew from 145 to 149 entries (four added, none removed — `deepseek-attachment-error`, `fork-default-effort`, `config-editor-lock-order`, `piai-overflow-output-limit`), but only **4 files** in the engine tree actually differ: `dsh-api-session-controller/lib/index.js`, `dsh-config-editor/lib/index.js`, `dsh-llm-deepseek/lib/index.js`, `@earendil-works/pi-ai/dist/utils/overflow.js`. None of them carries a drifted anchor — `dsh-llm-deepseek` is the only one of the four this patch table even touches, and `dsh-config-editor` / pi-ai overflow appear nowhere in it. So g17 is a version-and-docs bump: the same 85 patches apply, with the same status counts. The 1.0.15 → 1.0.16 story is kept for reference: 22 files changed, 3 in intersection, and #86 was the one real drift (1.0.16 inserted a deletion guard into the steer case, so the old anchor went silent while still reporting applied; g16 added the guarded anchor, which still matches on 1.1.0).
 
 ---
 ## Install
@@ -172,7 +173,7 @@ DSH Go imports a **tarball**. Three routes, pick one.
 **1. Release asset** (pin this one for a stable install)
 
 ```text
-https://github.com/ssacko510-stack/dsh-purge-go/releases/download/v1.1.71-g16/dsh-purge-1.1.71-g16.tgz
+https://github.com/ssacko510-stack/dsh-purge-go/releases/download/v1.1.71-g17/dsh-purge-1.1.71-g17.tgz
 ```
 
 **2. Branch archive** (always the newest commit on main)
@@ -197,7 +198,7 @@ https://codeload.github.com/ssacko510-stack/dsh-purge-go/tar.gz/refs/heads/main
 
 - **dsh-purge** sits beside the session title, with **Apply** on its Clean page.
 - `/purge status` prints DSH_HOME and the patch list; that path must be the profile you actually run.
-- After Apply, `lib/index.js` inside the installed @deepseek-ai tree carries `// [dsh-purge-...]` markers — 5 of them on 1.0.16.
+- After Apply, `lib/index.js` inside the installed @deepseek-ai tree carries `// [dsh-purge-...]` markers — 5 of them on 1.1.0.
 
 ### Manual install
 
@@ -271,7 +272,7 @@ dsh-purge --edit
 purge_status   purge_apply   purge_revert
 ```
 
-After a successful Apply, DSH Go restarts once so the patched engine packages load; you can also click **Restart** manually. The version line under the patch title shows the installed build (e.g. `1.1.71-g16`). In-panel auto-update is intentionally disabled on this line: the updater only accepts `v?X.Y.Z` tags, and this line uses the `-g<minor>` suffix. Upgrading means importing the newer tarball the same way you installed this one.
+After a successful Apply, DSH Go restarts once so the patched engine packages load; you can also click **Restart** manually. The version line under the patch title shows the installed build (e.g. `1.1.71-g17`). In-panel auto-update is intentionally disabled on this line: the updater only accepts `v?X.Y.Z` tags, and this line uses the `-g<minor>` suffix. Upgrading means importing the newer tarball the same way you installed this one.
 
 The composer **Undo once** and **Undo last round** follow official DSH `session.fork({ atSeq })`: the withdrawn turn is cut off, a new session keeps the earlier context, the old session is archived, and the line returns to the input so **send again** re-injects. `/rewind` does the same.
 
@@ -417,14 +418,14 @@ If nothing is found, set `DSH_HOME`. No files are changed.
 
 ## Releases
 
-What changed, and the zip, are on [Releases](https://github.com/ssacko510-stack/dsh-purge-go/releases). To publish, bump the version in `package.json`, write Chinese and English notes in `release-notes.md`, and push `main`. Pushing the same version again does not publish another package. Tags are plain `v<version>`, e.g. `v1.1.71-g16`.
+What changed, and the zip, are on [Releases](https://github.com/ssacko510-stack/dsh-purge-go/releases). To publish, bump the version in `package.json`, write Chinese and English notes in `release-notes.md`, and push `main`. Pushing the same version again does not publish another package. Tags are plain `v<version>`, e.g. `v1.1.71-g17`.
 
 ## Notes
 
 - Scope is rendered copy, defaults, and runtime logic inside local `@deepseek-ai/*` packages, plus override files and rule sets under the harness home.
 - After an upgrade, unmatched originals show as skipped. Apply still completes, and those files are left unchanged.
 - Third-party plugin *source repos* outside `@deepseek-ai` are left alone (CMD silence may **best-effort** patch installed doctor / market / liangshen / mnemon at runtime).
-- Install this build: paste `https://github.com/ssacko510-stack/dsh-purge-go/releases/download/v1.1.71-g16/dsh-purge-1.1.71-g16.tgz` into DSH Go's **Add plugin** box, or use the codeload archive `https://codeload.github.com/ssacko510-stack/dsh-purge-go/tar.gz/refs/heads/main`. `dsh plugin add` with `--profile web` / `--profile desktop` belongs to the desktop line, not this one.
+- Install this build: paste `https://github.com/ssacko510-stack/dsh-purge-go/releases/download/v1.1.71-g17/dsh-purge-1.1.71-g17.tgz` into DSH Go's **Add plugin** box, or use the codeload archive `https://codeload.github.com/ssacko510-stack/dsh-purge-go/tar.gz/refs/heads/main`. `dsh plugin add` with `--profile web` / `--profile desktop` belongs to the desktop line, not this one.
 
 ---
 
@@ -449,7 +450,7 @@ Doctor exits 0 only for a healthy host and 1 for a failed check. Saving a baseli
 
 ## The transactional updater
 
-In-panel auto-update is **disabled on this line by design**. `checkUpdate()` only accepts `v?X.Y.Z` tags when it picks a release asset, and every version here carries a `-g<minor>` suffix (`1.1.71-g16`), so a strict release match can never succeed. Rather than letting the panel turn red, the call reports *no update* and points at the tarball.
+In-panel auto-update is **disabled on this line by design**. `checkUpdate()` only accepts `v?X.Y.Z` tags when it picks a release asset, and every version here carries a `-g<minor>` suffix (`1.1.71-g17`), so a strict release match can never succeed. Rather than letting the panel turn red, the call reports *no update* and points at the tarball.
 
 Upgrading is therefore a manual, repeatable step: download the newer `dsh-purge-<version>.tgz` from [Releases](https://github.com/ssacko510-stack/dsh-purge-go/releases), paste it into **Add plugin**, then **quit DSH Go fully → reopen → Apply in Clean**. The import replaces the plugin payload; the engine patches are reapplied from scratch, so no rollback state is involved.
 
